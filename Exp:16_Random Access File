@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <string.h>
+
+struct emp {
+    int id;
+    char name[20];
+    float salary;
+};
+
+int main() {
+    struct emp e[10];
+    int choice, id;
+
+    // Initialize all records
+    for(int i = 0; i < 10; i++) {
+        e[i].id = 0;
+    }
+
+    while(1) {
+        printf("\n1. Add Record\n2. Display Record\n3. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+
+            case 1:
+                printf("Enter ID (1-10), Name, Salary: ");
+                scanf("%d", &id);
+
+                // 🔒 SAFETY CHECK
+                if(id < 1 || id > 10) {
+                    printf("Invalid ID! Enter between 1-10\n");
+                    break;
+                }
+
+                scanf("%s %f", e[id-1].name, &e[id-1].salary);
+                e[id-1].id = id;
+
+                printf("Record added successfully\n");
+                break;
+
+            case 2:
+                printf("Enter ID to search: ");
+                scanf("%d", &id);
+
+                // 🔒 SAFETY CHECK
+                if(id < 1 || id > 10) {
+                    printf("Invalid ID!\n");
+                    break;
+                }
+
+                if(e[id-1].id != 0) {
+                    printf("\nID\tName\tSalary\n");
+                    printf("%d\t%s\t%.2f\n", e[id-1].id, e[id-1].name, e[id-1].salary);
+                } else {
+                    printf("Record not found\n");
+                }
+                break;
+
+            case 3:
+                return 0;
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}
