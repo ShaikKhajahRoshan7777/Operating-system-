@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <string.h>
+
+struct user {
+    char uname[20];
+    char files[10][20];
+    int fcount;
+};
+
+int main() {
+    struct user u[10];
+    int ucount = 0, choice, i, j;
+    char uname[20], fname[20];
+
+    while(1) {
+        printf("\n1. Create User\n2. Create File\n3. Display Files\n4. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+
+            case 1:
+                printf("Enter user name: ");
+                scanf("%s", uname);
+                strcpy(u[ucount].uname, uname);
+                u[ucount].fcount = 0;
+                ucount++;
+                printf("User created successfully\n");
+                break;
+
+            case 2:
+                printf("Enter user name: ");
+                scanf("%s", uname);
+
+                for(i = 0; i < ucount; i++) {
+                    if(strcmp(u[i].uname, uname) == 0) {
+                        printf("Enter file name: ");
+                        scanf("%s", fname);
+
+                        strcpy(u[i].files[u[i].fcount], fname);
+                        u[i].fcount++;
+
+                        printf("File created successfully\n");
+                        break;
+                    }
+                }
+
+                if(i == ucount)
+                    printf("User not found\n");
+                break;
+
+            case 3:
+                printf("Enter user name: ");
+                scanf("%s", uname);
+
+                for(i = 0; i < ucount; i++) {
+                    if(strcmp(u[i].uname, uname) == 0) {
+                        printf("Files of %s:\n", uname);
+                        for(j = 0; j < u[i].fcount; j++) {
+                            printf("%s\n", u[i].files[j]);
+                        }
+                        break;
+                    }
+                }
+
+                if(i == ucount)
+                    printf("User not found\n");
+                break;
+
+            case 4:
+                return 0;
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+
+    return 0;
+}
