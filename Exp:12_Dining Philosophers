@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+
+#define N 5
+
+pthread_mutex_t chopstick[N];   // renamed (not 'fork')
+
+// Philosopher function
+void* philosopher(void* num) {
+    int i = *(int*)num;
+
+    printf("P%d\tThinking\n", i);
+
+    pthread_mutex_lock(&chopstick[i]);
+    pthread_mutex_lock(&chopstick[(i+1)%N]);
+
+    printf("P%d\tEating\n", i);
+
+    sleep(1);
+
+    pthread_mutex_unlock(&chopstick[i]);
+    pthread_mutex_unlock(&chopstick[(i+1)%N]);
+
+    return NULL;
+}
+
+int main() {
+    pthread_t t[N];
+    int i, id[N];
+
+    printf("\nPhilosopher\tState\n");
+
+    // Initialize mutex
+    for(i = 0; i < N; i++) {
+        pthread_mutex_init(&chopstick[i], NULL);
+    }
+
+    // Create threads
+    for(i = 0; i < N; i++) {
+        id[i] = i;
+        pthread_create(&t[i], NULL, philosopher, &id[i]);
+    }
+
+    // Join threads
+    for(i = 0; i < N; i++) {
+        pthread_join(t[i], NULL);
+    }
+
+    return 0;
+}
